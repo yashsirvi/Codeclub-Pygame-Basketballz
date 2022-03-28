@@ -1,6 +1,8 @@
 # Basketballz
 
-![](./images/screeniconbasketball.png)
+<p align="center">
+  <img src="./images/screeniconbasketball.png" />
+</p
 
 A simple game made in PyGame.
 
