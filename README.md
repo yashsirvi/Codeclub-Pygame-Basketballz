@@ -17,12 +17,13 @@ To play the game, run the `main.py` file using `python main.py`
 
 
 
-### Screenshots:
+### Gameplay:
+
+
 
 <p align= "center">
-    <img src="./images/screenshot.png" />
+    <img src="./gameplay.gif" />
 </p>
-
 
 
 
