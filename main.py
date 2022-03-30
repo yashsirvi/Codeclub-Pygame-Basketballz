@@ -43,7 +43,7 @@ hoop = pygame.transform.scale(hooptemp, (int(hoopsize1*0.35), int(hoopsize2*.35)
 
 #importing audio
 scoreSound = pygame.mixer.Sound("./sounds/Score.wav")
-lossSound = pygame.mixer.Sound("./sounds/loss.wav")
+lossSound = pygame.mixer.Sound("./sounds/Loss.wav")
 bounce = pygame.mixer.Sound("./sounds/bounce.wav")
 bgsound = pygame.mixer.Sound("./sounds/BlackTar.wav")
 pygame.mixer.Sound.play(bgsound)
