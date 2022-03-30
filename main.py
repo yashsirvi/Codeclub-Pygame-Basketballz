@@ -17,7 +17,7 @@ running = True
 validthrow = False
 gotscore = False
 start = False
-lives = 5
+lives = 0
 ballstate = "ready"
 clicked = False
 hoopCorner = (862,135)
@@ -149,7 +149,7 @@ def moveball(pos, xball, yball):
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            running = quit()
         if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = True
         if event.type == pygame.MOUSEBUTTONUP:
@@ -175,8 +175,7 @@ while running:
                 lives -=1
                 pygame.mixer.Sound.play(lossSound)
                 showTextLives = pygame.font.Font(None, 45).render("Lives: "+str(lives),1,(245, 66, 99))
-            if lives == 0:
-                screen.blit(pygame.font.Font(None,100).render("Game Over",1,(255,0,0)),(500,200))
+            if lives <= 0:
                 break
         lostlife = False
         xball, yball = ballpos()
@@ -216,3 +215,11 @@ while running:
     screen.blit(showTextLives,(50,100))
     pygame.display.update()
     clock.tick(FPS)
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    screen.blit(bg,(0,0))
+    screen.blit(pygame.font.Font(None,100).render("Game Over",1,(245,50,50)),(325,200))
+    pygame.display.update()
