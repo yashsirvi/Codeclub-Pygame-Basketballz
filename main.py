@@ -41,12 +41,15 @@ hooptemp = pygame.image.load("images/hoop.png")
 hoopsize1, hoopsize2 = hooptemp.get_size()
 hoop = pygame.transform.scale(hooptemp, (int(hoopsize1*0.35), int(hoopsize2*.35)))
 
+
 #importing audio
 scoreSound = pygame.mixer.Sound("./sounds/Score.wav")
 lossSound = pygame.mixer.Sound("./sounds/Loss.wav")
 bounce = pygame.mixer.Sound("./sounds/bounce.wav")
 bgsound = pygame.mixer.Sound("./sounds/BlackTar.wav")
 pygame.mixer.Sound.play(bgsound)
+
+
 # generating initial position of ball
 ball = pygame.transform.scale(icon, (64, 64))
 def ballpos():
@@ -57,6 +60,7 @@ def ballpos():
 
 def distance(xball, yball,x,y):
     return np.sqrt((xball-x)**2 + (yball-y)**2)
+
 
 # tracking path
 def trackpath(pos):
@@ -80,6 +84,8 @@ def trackpath(pos):
     
     
 def moveball(pos, xball, yball):
+    
+    
     collided1 = False
     collided2 = False
     mx, my = pos
@@ -102,10 +108,13 @@ def moveball(pos, xball, yball):
     moveY = [yball]
     newX = xball
     newY = yball
+    
+    
     while time < 30:
         newX += velx*dt
         newY -= vely*dt
         collisondist = distance(newX+32, newY+32, hoopCorner[0],hoopCorner[1])
+        
         if  collisondist< 25 and collided1 == False:
             collided1 = True
             phi = 0
@@ -121,6 +130,7 @@ def moveball(pos, xball, yball):
             vely = vely + parallelV*np.sin(phi)*0.6
             continue
         collisondist = distance(newX+32, newY+32, hoopBack[0],hoopBack[1])
+        
         if collisondist < 15 and collided2 == False:
             phi = 0
             dx2 = newX + 32 - hoopCorner[0]
@@ -138,13 +148,16 @@ def moveball(pos, xball, yball):
         
         if newX > boardend or newX < 0:
             velx = -velx
+            
         if newY > 600-64 :
             vely = -vely
         moveX.append(newX)
         moveY.append(newY)
         time += dt
         vely -=  g*dt
+        
     return moveX, moveY
+
 
 while running:
     for event in pygame.event.get():
@@ -158,11 +171,10 @@ while running:
                 ballstate = "released"
                 clicked = False
 
+                
     screen.blit(bg,(0,0))
     screen.blit(hoop,(860,100))
-    # pygame.draw.circle(screen, (255,0,0), (910,175), 5)
-    # pygame.draw.circle(screen, (255,0,0), (hoopCorner[0],hoopCorner[1]), 5)
-    # pygame.draw.circle(screen, (255,0,0), (hoopBack[0],hoopBack[1]), 5)
+
     if clicked:
         releasepos = pygame.mouse.get_pos()
         guideX, guideY = trackpath(releasepos)
@@ -183,6 +195,7 @@ while running:
         collided1 = False
         ballstate= "ready2"
 
+        
     if ballstate == "released":
         start = True
         validthrow = False
@@ -216,6 +229,7 @@ while running:
     pygame.display.update()
     clock.tick(FPS)
 
+    
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
