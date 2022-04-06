@@ -8,6 +8,7 @@ screen = pygame.display.set_mode((1000,600))
 
 
 # variables
+
 boardend = 930
 clock = pygame.time.Clock()
 FPS = 30
@@ -25,11 +26,12 @@ hoopBack = (965,135)
 guideX = []
 guideY = []
 collided1 = False
-showTextScore = pygame.font.Font(None, 45).render("Score: 0", 1, (255, 208, 0))
-showTextLives = pygame.font.Font(None, 45).render("Lives: "+str(lives),1,(245, 66, 99))
+showTextScore = pygame.font.Font("Garet.ttf", 25).render("Score: 0", 1, (255, 208, 0))
+showTextLives = pygame.font.Font("Garet.ttf", 25).render("Lives: "+str(lives),1,(245, 66, 99))
 
 
 # importing images
+
 pygame.display.set_caption("basketballz")
 icon = pygame.image.load('images/screeniconbasketball.png')
 pygame.display.set_icon(icon)
@@ -43,6 +45,7 @@ hoop = pygame.transform.scale(hooptemp, (int(hoopsize1*0.35), int(hoopsize2*.35)
 
 
 #importing audio
+
 scoreSound = pygame.mixer.Sound("./sounds/Score.wav")
 lossSound = pygame.mixer.Sound("./sounds/Loss.wav")
 bounce = pygame.mixer.Sound("./sounds/bounce.wav")
@@ -51,7 +54,10 @@ pygame.mixer.Sound.play(bgsound)
 
 
 # generating initial position of ball
+
 ball = pygame.transform.scale(icon, (64, 64))
+
+
 def ballpos():
     xball = random.randint(200,400)
     yball = random.randint(300,460)
@@ -62,7 +68,9 @@ def distance(xball, yball,x,y):
     return np.sqrt((xball-x)**2 + (yball-y)**2)
 
 
+
 # tracking path
+
 def trackpath(pos):
     mx, my = pos
     dx = (mx-xball-32)
@@ -83,9 +91,8 @@ def trackpath(pos):
     return trackx, tracky
     
     
+
 def moveball(pos, xball, yball):
-    
-    
     collided1 = False
     collided2 = False
     mx, my = pos
@@ -108,13 +115,10 @@ def moveball(pos, xball, yball):
     moveY = [yball]
     newX = xball
     newY = yball
-    
-    
     while time < 30:
         newX += velx*dt
         newY -= vely*dt
         collisondist = distance(newX+32, newY+32, hoopCorner[0],hoopCorner[1])
-        
         if  collisondist< 25 and collided1 == False:
             collided1 = True
             phi = 0
@@ -130,7 +134,6 @@ def moveball(pos, xball, yball):
             vely = vely + parallelV*np.sin(phi)*0.6
             continue
         collisondist = distance(newX+32, newY+32, hoopBack[0],hoopBack[1])
-        
         if collisondist < 15 and collided2 == False:
             phi = 0
             dx2 = newX + 32 - hoopCorner[0]
@@ -148,18 +151,19 @@ def moveball(pos, xball, yball):
         
         if newX > boardend or newX < 0:
             velx = -velx
-            
         if newY > 600-64 :
             vely = -vely
         moveX.append(newX)
         moveY.append(newY)
         time += dt
         vely -=  g*dt
-        
     return moveX, moveY
 
 
+# Game
+
 while running:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = quit()
@@ -171,7 +175,6 @@ while running:
                 ballstate = "released"
                 clicked = False
 
-                
     screen.blit(bg,(0,0))
     screen.blit(hoop,(860,100))
 
@@ -186,7 +189,7 @@ while running:
             if gotscore == False:
                 lives -=1
                 pygame.mixer.Sound.play(lossSound)
-                showTextLives = pygame.font.Font(None, 45).render("Lives: "+str(lives),1,(245, 66, 99))
+                showTextLives = pygame.font.Font("Garet.ttf", 25).render("Lives: "+str(lives),1,(245, 66, 99))
             if lives <= 0:
                 break
         lostlife = False
@@ -195,7 +198,6 @@ while running:
         collided1 = False
         ballstate= "ready2"
 
-        
     if ballstate == "released":
         start = True
         validthrow = False
@@ -212,28 +214,29 @@ while running:
             if hoopCorner[0]+10<xball+32<hoopBack[0]-10 and hoopCorner[1] + 50 > yball+32 > hoopCorner[1] and validthrow and gotscore == False:
                 score += 1
                 pygame.mixer.Sound.play(scoreSound)
-                textfont = pygame.font.Font(None, 45)
+                textfont = pygame.font.Font("Garet.ttf", 25)
                 showTextScore = textfont.render("Score: " +str(score), 1, (255, 208, 0))
                 gotscore = True
                 validthrow = False
             screen.blit(bg,(0,0))
             screen.blit(ball, ( xball, yball))
             screen.blit(hoop,(860,100))
-            screen.blit(showTextScore,(50,50))
-            screen.blit(showTextLives,(50,100))
-
+            screen.blit(showTextScore,(64, 42))
+            screen.blit(showTextLives,(64, 80))
         ballstate = "ready"
     screen.blit(ball,(xball,yball))
-    screen.blit(showTextScore,(50,50))
-    screen.blit(showTextLives,(50,100))
+    screen.blit(showTextScore,(64, 42))
+    screen.blit(showTextLives,(64, 80))
     pygame.display.update()
     clock.tick(FPS)
 
-    
+
+# End Screen
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     screen.blit(bg,(0,0))
-    screen.blit(pygame.font.Font(None,100).render("Game Over",1,(245,50,50)),(325,200))
+    screen.blit(pygame.font.Font("Garet.ttf",64).render("Game Over",1,(245,50,50)),(325,200))
     pygame.display.update()
